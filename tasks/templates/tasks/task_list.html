@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks</title>
+</head>
+<body>
+  <h1>Task Manager</h1>
+  <p><a href="{% url 'task_create' %}">Create new task</a></p>
+
+  <ul>
+    {% for task in tasks %}
+      <li>
+        <strong>{{ task.title }}</strong>
+        {% if task.description %}
+          - {{ task.description }}
+        {% endif %}
+        {% if task.is_completed %}
+          (completed)
+        {% endif %}
+        <a href="{% url 'task_edit' task.id %}">Edit</a>
+        <form action="{% url 'task_delete' task.id %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No tasks yet.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
